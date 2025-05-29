@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
+    <title>Cadastro de Clientes</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="assets/css/Login-Form-Basic-icons.css"/>
+    <link rel="stylesheet" href="assets/css/styles.css"/>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="text-center">Cadastro de Cliente</h2>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <!-- Alternância de tipo de pessoa -->
+                            <div class="row mb-3">
+                                <div class="col-md-12 text-center">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-outline-primary active" id="btnPF">Pessoa Física</button>
+                                        <button type="button" class="btn btn-outline-primary" id="btnPJ">Pessoa Jurídica</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ID -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="id" class="form-label">ID</label>
+                                    <input type="text" class="form-control" id="id" name="id" readonly disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="codigoFiscal" class="form-label" id="labelCodigoFiscal">CPF</label>
+                                    <input type="text" class="form-control" id="codigoFiscal" name="codigoFiscal" placeholder="Digite o CPF">
+                                </div>
+                            </div>
+                            <!-- Inscrição Estadual (PJ) -->
+                            <div class="row mb-3 d-none" id="divInscricaoEstadual">
+                                <div class="col-md-6">
+                                    <label for="inscricaoEstadual" class="form-label">Inscrição Estadual</label>
+                                    <input type="text" class="form-control" id="inscricaoEstadual" name="inscricaoEstadual" maxlength="15" placeholder="Digite a Inscrição Estadual">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="nomeFantasia" class="form-label">Nome Fantasia</label>
+                                    <input type="text" class="form-control" id="nomeFantasia" name="nomeFantasia" placeholder="Digite o Nome Fantasia">
+                                </div>
+                            </div>
+                            <!-- Nome/Razão Social -->
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="nome" class="form-label" id="labelNome">Nome Completo</label>
+                                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome completo">
+                                </div>
+                            </div>
+                            <!-- Data -->
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="dataNascimento" class="form-label" id="labelData">Data de Nascimento</label>
+                                    <input type="date" class="form-control" id="dataNascimento" name="dataNascimento">
+                                </div>
+                            </div>
+                            <!-- Endereço, Número, Bairro -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="endereco" class="form-label">Endereço</label>
+                                    <input type="text" class="form-control" id="endereco" name="endereco" placeholder="Digite o endereço">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="numero" class="form-label">Número</label>
+                                    <input type="text" class="form-control" id="numero" name="numero" placeholder="Nº">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="bairro" class="form-label">Bairro</label>
+                                    <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Digite o bairro">
+                                </div>
+                            </div>
+                            <!-- Estado e Cidade (Ordem trocada) -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="estado" class="form-label">Estado</label>
+                                    <select class="form-control" id="estado" name="estado"></select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="cidade" class="form-label">Cidade</label>
+                                    <select class="form-control" id="cidade" name="cidade"></select>
+                                </div>
+                            </div>
+                            <!-- Imagem -->
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="imagem" class="form-label">Foto/Logo</label>
+                                    <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*">
+                                </div>
+                            </div>
+                            <!-- Botões -->
+                            <div class="row mt-4">
+                                <div class="col-md-6 mb-2">
+                                    <button type="reset" class="btn btn-secondary w-100">Limpar</button>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <button type="submit" class="btn btn-primary w-100">Salvar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="scripts/lista_extendida.js"></script>
+</body>
+</html>
