@@ -32,12 +32,17 @@ class Server {
         this.app.use('/api/login', require('./routes/login'));
         this.app.use('/api/lista', require('./routes/lista'));
         
+        // Rota de edição de usuário (inclui tanto PUT /api/editar quanto GET /api/usuario-atual)
+        const editarRoutes = require('./routes/editar');
+        this.app.use('/api/editar', editarRoutes);
+        this.app.use('/api/usuario-atual', editarRoutes);
 
         // Rotas para páginas HTML na raiz
         this.app.get('/', (req, res) => res.sendFile(path.join(this.rootPath, 'index.html')));
         this.app.get('/cadastro', (req, res) => res.sendFile(path.join(this.rootPath, 'cadastro_user.html')));
         this.app.get('/cliente', (req, res) => res.sendFile(path.join(this.rootPath, 'form_cliente.html')));
         this.app.get('/lista', (req, res) => res.sendFile(path.join(this.rootPath, 'lista_clientes.html')));
+        this.app.get('/editar-usuario', (req, res) => res.sendFile(path.join(this.rootPath, 'editar_usuario.html')));
     }
 
     // Middleware de tratamento de erros
