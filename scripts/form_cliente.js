@@ -1,11 +1,10 @@
 /**
- * Classe responsável pelo gerenciamento do formulário de cadastro de clientes,
- * incluindo o envio de imagem para o servidor, validação e geração de ID.
+ * Classe responsável pelo gerenciamento do formulário de cadastro de clientes
+ * com validação de duplicidade, upload de imagem e integração com API
  */
 class FormularioCliente {
     constructor() {
         this.clientes = [];
-        // Configurações de caminhos de API e arquivos
         this.config = {
             apiClientes: '/api/clientes',
             arquivoEstados: 'data/estados.json',
@@ -15,7 +14,6 @@ class FormularioCliente {
         this.iniciarQuandoCarregar();
     }
 
-    // Inicializa a lógica da página ao carregar o DOM
     iniciarQuandoCarregar() {
         if (document.readyState === 'loading') {
             window.addEventListener('DOMContentLoaded', () => this.inicializar());
@@ -24,7 +22,6 @@ class FormularioCliente {
         }
     }
 
-    // Fluxo principal de inicialização
     async inicializar() {
         try {
             this.definirTipoPadrao('pf');
@@ -39,27 +36,23 @@ class FormularioCliente {
         }
     }
 
-    // Configura todos os eventos do formulário
     configurarEventos() {
-        // Alternância PF/PJ
         this.addEvento('btnPF', 'click', () => this.alternarTipoCliente('pf'));
         this.addEvento('btnPJ', 'click', () => this.alternarTipoCliente('pj'));
-        // Carregar cidades ao mudar o estado
         this.addEvento('estado', 'change', (e) => {
             if (e.target.value) this.carregarCidadesPorEstado(e.target.value);
         });
-        // Submissão do formulário
+        
         const form = document.querySelector('form');
         if (form) form.onsubmit = (e) => { e.preventDefault(); this.processarSalvamento(); };
     }
 
-    // Helper para adicionar eventos a elementos por ID
     addEvento(id, evento, callback) {
         const el = document.getElementById(id);
         if (el) el.addEventListener(evento, callback);
     }
 
-    // Alterna para PF ou PJ e atualiza campos do formulário
+    // Alterna entre PF e PJ atualizando os campos do formulário
     alternarTipoCliente(tipo) {
         const ehPJ = tipo === 'pj';
         const configs = {
@@ -72,6 +65,7 @@ class FormularioCliente {
             'nome': { placeholder: `Digite ${ehPJ ? 'a Razão Social' : 'o nome completo'}` },
             'divInscricaoEstadual': { classe: 'd-none', ativo: !ehPJ }
         };
+        
         Object.entries(configs).forEach(([id, config]) => {
             const el = document.getElementById(id);
             if (!el) return;
@@ -79,35 +73,33 @@ class FormularioCliente {
             if (config.placeholder) el.placeholder = config.placeholder;
             if (config.classe) el.classList.toggle(config.classe, config.ativo);
         });
+        
         this.gerarNovoId();
     }
 
-    // Define o tipo padrão (PF/PJ)
     definirTipoPadrao(tipo) {
         this.alternarTipoCliente(tipo);
     }
 
-    // Gera um ID alfanumérico para o cliente
+    // Gera ID alfanumérico único
     gerarNovoId() {
         const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const numeros = '0123456789';
-        // Alterna letra-número-letra-número...
         const id = Array(8).fill().map((_, i) => {
             const chars = [2, 4, 6].includes(i) ? letras : numeros;
             return chars[Math.floor(Math.random() * chars.length)];
         }).join('');
+        
         const campo = document.getElementById('id');
         if (campo) campo.value = id;
     }
 
-    // Busca e retorna JSON de um arquivo local via fetch
     async carregarDados(arquivo) {
         const resposta = await fetch(arquivo);
         if (!resposta.ok) throw new Error(`Erro HTTP: ${resposta.status}`);
         return resposta.json();
     }
 
-    // Carrega estados no select
     async carregarEstados() {
         try {
             const estados = await this.carregarDados(this.config.arquivoEstados);
@@ -118,7 +110,6 @@ class FormularioCliente {
         }
     }
 
-    // Carrega cidades para o estado selecionado
     async carregarCidadesPorEstado(estado) {
         try {
             const cidades = await this.carregarDados(this.config.arquivoCidades);
@@ -130,10 +121,10 @@ class FormularioCliente {
         }
     }
 
-    // Preenche um select com opções
     preencherSelect(id, dados, placeholder, extra = '') {
         const select = document.getElementById(id);
         if (!select) return;
+        
         select.innerHTML = `<option value="">${placeholder}</option>`;
         dados.forEach(item => {
             const option = document.createElement('option');
@@ -143,7 +134,6 @@ class FormularioCliente {
         });
     }
 
-    // Carrega a lista de clientes existentes
     async carregarClientesExistentes() {
         try {
             const resposta = await fetch(this.config.apiClientes);
@@ -159,45 +149,44 @@ class FormularioCliente {
     }
 
     /**
-     * Processa o salvamento do cliente, incluindo upload de imagem.
-     * Envia todos os dados em um FormData para o backend.
-     * Agora é obrigatório anexar uma imagem.
+     * Processa o salvamento com validação de duplicidade no servidor
+     * O servidor verifica CPF/CNPJ e Inscrição Estadual duplicados
      */
     async processarSalvamento() {
         try {
             const cliente = this.coletarDadosFormulario();
-            // Verifica campos obrigatórios
+            
+            // Validação de campos obrigatórios
             if (!cliente.id || !cliente.codigoFiscal || !cliente.nome) {
                 this.exibirAlerta('Preencha todos os campos obrigatórios!', 'error');
                 return;
             }
 
-            // Coleta imagem do campo "imagem"
+            // Validação de imagem obrigatória
             const inputImg = document.getElementById('imagem');
             const imagem = inputImg && inputImg.files.length > 0 ? inputImg.files[0] : null;
-
-            // Valida se tem imagem (agora é obrigatório)
+            
             if (!imagem) {
                 this.exibirAlerta('É obrigatório anexar uma imagem do cliente!', 'error');
                 return;
             }
 
-            // Valida tamanho (15MB)
             if (imagem.size > 15 * 1024 * 1024) {
                 this.exibirAlerta('A imagem deve ter no máximo 15 MB!', 'error');
                 return;
             }
 
-            // Monta FormData para envio
+            // Prepara dados para envio
             const formData = new FormData();
             formData.append('cliente', JSON.stringify(cliente));
             formData.append('userIcon', imagem);
 
-            // Faz o POST para a API
+            // Envia para o servidor que fará a validação de duplicidade
             const resposta = await fetch(this.config.apiClientes, {
                 method: 'POST',
                 body: formData
             });
+            
             const resultado = await resposta.json();
 
             if (resposta.ok) {
@@ -205,18 +194,20 @@ class FormularioCliente {
                     window.location.href = this.config.paginaLista;
                 });
             } else {
+                // Exibe erro de validação retornado pelo servidor (duplicidade, etc.)
                 this.exibirAlerta(resultado.erro || 'Erro ao salvar cliente!', 'error');
             }
+            
         } catch (erro) {
             console.error('Erro ao salvar cliente:', erro);
             this.exibirAlerta('Erro de conexão com o servidor!', 'error');
         }
     }
 
-    // Coleta os dados do formulário em um objeto
     coletarDadosFormulario() {
         const ehPJ = document.getElementById('btnPJ')?.classList.contains('active');
         const getVal = (id) => document.getElementById(id)?.value.trim() || '';
+        
         const dados = {
             tipo: ehPJ ? 'pj' : 'pf',
             id: getVal('id'),
@@ -231,14 +222,15 @@ class FormularioCliente {
                 estado: getVal('estado')
             }
         };
+        
         if (ehPJ) {
             dados.inscricaoEstadual = getVal('inscricaoEstadual');
             dados.nomeFantasia = getVal('nomeFantasia');
         }
+        
         return dados;
     }
 
-    // Busca cliente por ID via API
     async buscarCliente(id) {
         try {
             const resposta = await fetch(`${this.config.apiClientes}/${id}`);
@@ -252,15 +244,17 @@ class FormularioCliente {
         }
     }
 
-    // Exibe alertas modais personalizados
+    // Sistema de alertas personalizados
     exibirAlerta(msg, tipo = 'info', callback = null) {
         const alertaExistente = document.querySelector('.alerta-personalizado');
         if (alertaExistente) alertaExistente.remove();
+        
         const configs = {
             success: { icone: '✅', titulo: 'Sucesso!', cor: '#4CAF50' },
             error: { icone: '❌', titulo: 'Erro!', cor: '#f44336' },
             info: { icone: 'ℹ️', titulo: 'Informação', cor: '#2196F3' }
         };
+        
         const config = configs[tipo] || configs.info;
         const overlay = document.createElement('div');
         overlay.className = 'alerta-personalizado';
@@ -272,6 +266,7 @@ class FormularioCliente {
                 <button class="alerta-botao" style="background: ${config.cor}">OK</button>
             </div>
         `;
+        
         const fechar = () => {
             overlay.classList.remove('show');
             setTimeout(() => {
@@ -279,16 +274,18 @@ class FormularioCliente {
                 if (callback) callback();
             }, 300);
         };
+        
         overlay.querySelector('.alerta-botao').onclick = fechar;
         overlay.onclick = (e) => { if (e.target === overlay) fechar(); };
+        
         this.addEstilosAlerta();
         document.body.appendChild(overlay);
         setTimeout(() => overlay.classList.add('show'), 10);
     }
 
-    // Adiciona estilos CSS para os alertas
     addEstilosAlerta() {
         if (document.getElementById('estilos-alerta')) return;
+        
         const style = document.createElement('style');
         style.id = 'estilos-alerta';
         style.textContent = `
@@ -305,9 +302,9 @@ class FormularioCliente {
         document.head.appendChild(style);
     }
 
-    // Cria botão para exportar o último cliente cadastrado
     criarBotaoExportacao() {
         if (document.getElementById('btnExportar')) return;
+        
         const btn = document.createElement('button');
         Object.assign(btn, {
             id: 'btnExportar',
@@ -315,15 +312,17 @@ class FormularioCliente {
             textContent: 'Exportar JSON do Último Cliente',
             type: 'button'
         });
+        
         btn.onclick = () => this.exportarUltimoCliente();
+        
         const container = document.createElement('div');
         container.className = 'col-md-12 mb-2';
         container.appendChild(btn);
+        
         const row = document.querySelector('.row.mt-4');
         if (row) row.appendChild(container);
     }
 
-    // Exporta o JSON do último cliente cadastrado
     async exportarUltimoCliente() {
         try {
             await this.carregarClientesExistentes();
@@ -331,17 +330,21 @@ class FormularioCliente {
                 this.exibirAlerta('Nenhum cliente cadastrado para exportar!', 'info');
                 return;
             }
+            
             const cliente = this.clientes[this.clientes.length - 1];
             const blob = new Blob([JSON.stringify(cliente, null, 2)], { type: 'application/json' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.download = `cliente_${cliente.id}.json`;
+            
             document.body.appendChild(link);
             link.click();
+            
             setTimeout(() => {
                 document.body.removeChild(link);
                 URL.revokeObjectURL(link.href);
             }, 100);
+            
         } catch (erro) {
             console.error('Erro ao exportar cliente:', erro);
             this.exibirAlerta('Erro ao exportar cliente!', 'error');
@@ -349,5 +352,5 @@ class FormularioCliente {
     }
 }
 
-// Inicializa o formulário ao carregar o script
+// Inicializa o formulário
 const formularioCliente = new FormularioCliente();
