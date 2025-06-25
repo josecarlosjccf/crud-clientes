@@ -4,116 +4,221 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
     <title>Cadastro de Clientes</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="assets/css/Login-Form-Basic-icons.css"/>
-    <link rel="stylesheet" href="assets/css/styles.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet" />
 </head>
-<body>
-    <div class="container mt-5">
+<body class="bg-light">
+    <div class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h2 class="text-center">Cadastro de Cliente</h2>
+            <div class="col-12 col-lg-10 col-xl-8">
+                <div class="card shadow-lg border-0 rounded-4">
+                    <!-- Header -->
+                    <div class="card-header bg-primary bg-gradient text-white border-0 rounded-top-4 py-4">
+                        <div class="text-center">
+                            <i class="bi bi-person-plus-fill fs-1 mb-2"></i>
+                            <h2 class="fw-bold mb-1">Cadastro de Cliente</h2>
+                            <p class="mb-0 opacity-75">Preencha os dados para cadastrar um novo cliente</p>
+                        </div>
                     </div>
-                    <div class="card-body">
+
+                    <div class="card-body p-4 p-md-5">
                         <form>
-                            <!-- Alternância de tipo de pessoa -->
-                            <div class="row mb-3">
-                                <div class="col-md-12 text-center">
-                                    <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-outline-primary active" id="btnPF">Pessoa Física</button>
-                                        <button type="button" class="btn btn-outline-primary" id="btnPJ">Pessoa Jurídica</button>
+                            <!-- Tipo de Pessoa -->
+                            <div class="mb-5">
+                                <div class="text-center">
+                                    <h5 class="text-dark mb-3">
+                                        <i class="bi bi-person-badge me-2"></i>
+                                        Tipo de Pessoa
+                                    </h5>
+                                    <div class="btn-group btn-group-lg" role="group">
+                                        <button type="button" class="btn btn-primary px-4 py-3" id="btnPF">
+                                            <i class="bi bi-person me-2"></i>
+                                            Pessoa Física
+                                        </button>
+                                        
+                                        <button type="button" class="btn btn-outline-primary px-4 py-3" id="btnPJ">
+                                            <i class="bi bi-building me-2"></i>
+                                            Pessoa Jurídica
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <!-- ID -->
-                            <div class="row mb-3">
+
+                            <!-- Seção: Dados Básicos -->
+                            <div class="border-start border-primary border-4 ps-3 mb-4">
+                                <h5 class="text-primary fw-bold">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    Dados Básicos
+                                </h5>
+                            </div>
+
+                            <!-- ID e Documento -->
+                            <div class="row g-3 mb-4">
                                 <div class="col-md-6">
-                                    <label for="id" class="form-label">ID</label>
-                                    <input type="text" class="form-control" id="id" name="id" readonly disabled>
+                                    <label for="id" class="form-label fw-semibold text-dark">
+                                        <i class="bi bi-hash me-2"></i>ID
+                                    </label>
+                                    <input type="text" class="form-control form-control-lg border-2 rounded-3 bg-light" id="id" name="id" readonly disabled>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="codigoFiscal" class="form-label" id="labelCodigoFiscal">CPF</label>
-                                    <input type="text" class="form-control" id="codigoFiscal" name="codigoFiscal" placeholder="Digite o CPF">
+                                    <label for="codigoFiscal" class="form-label fw-semibold text-dark">
+                                        <i class="bi bi-card-text me-2"></i>CPF/CNPJ
+                                    </label>
+                                    <input type="text" class="form-control form-control-lg border-2 rounded-3" id="codigoFiscal" name="codigoFiscal" placeholder="Digite CPF ou CNPJ">
+                                    <div class="form-text">
+                                        <i class="bi bi-info-circle me-1"></i>
+                                        CPF: 000.000.000-00 ou CNPJ: 00.000.000/0000-00
+                                    </div>
                                 </div>
                             </div>
-                            <!-- Inscrição Estadual (PJ) -->
-                            <div class="row mb-3 d-none" id="divInscricaoEstadual">
+
+                            <!-- Campos PJ -->
+                            <div class="row g-3 mb-4">
                                 <div class="col-md-6">
-                                    <label for="inscricaoEstadual" class="form-label">Inscrição Estadual</label>
-                                    <input type="text" class="form-control" id="inscricaoEstadual" name="inscricaoEstadual" maxlength="15" placeholder="Digite a Inscrição Estadual">
+                                    <label for="inscricaoEstadual" class="form-label fw-semibold text-dark">
+                                        <i class="bi bi-file-text me-2"></i>Inscrição Estadual
+                                        <small class="text-muted">(apenas PJ)</small>
+                                    </label>
+                                    <input type="text" class="form-control form-control-lg border-2 rounded-3" id="inscricaoEstadual" name="inscricaoEstadual" maxlength="15" placeholder="000000000">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="nomeFantasia" class="form-label">Nome Fantasia</label>
-                                    <input type="text" class="form-control" id="nomeFantasia" name="nomeFantasia" placeholder="Digite o Nome Fantasia">
+                                    <label for="nomeFantasia" class="form-label fw-semibold text-dark">
+                                        <i class="bi bi-shop me-2"></i>Nome Fantasia
+                                        <small class="text-muted">(apenas PJ)</small>
+                                    </label>
+                                    <input type="text" class="form-control form-control-lg border-2 rounded-3" id="nomeFantasia" name="nomeFantasia" placeholder="Nome comercial da empresa">
                                 </div>
                             </div>
+
                             <!-- Nome/Razão Social -->
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <label for="nome" class="form-label" id="labelNome">Nome Completo</label>
-                                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome completo">
-                                </div>
+                            <div class="mb-4">
+                                <label for="nome" class="form-label fw-semibold text-dark">
+                                    <i class="bi bi-person-fill me-2"></i>Nome Completo / Razão Social
+                                </label>
+                                <input type="text" class="form-control form-control-lg border-2 rounded-3" id="nome" name="nome" placeholder="Digite o nome completo ou razão social">
                             </div>
+
                             <!-- Data -->
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <label for="dataNascimento" class="form-label" id="labelData">Data de Nascimento</label>
-                                    <input type="date" class="form-control" id="dataNascimento" name="dataNascimento">
-                                </div>
+                            <div class="mb-5">
+                                <label for="dataNascimento" class="form-label fw-semibold text-dark">
+                                    <i class="bi bi-calendar-event me-2"></i>Data de Nascimento / Fundação
+                                </label>
+                                <input type="date" class="form-control form-control-lg border-2 rounded-3" id="dataNascimento" name="dataNascimento">
                             </div>
+
+                            <!-- Seção: Endereço -->
+                            <div class="border-start border-success border-4 ps-3 mb-4">
+                                <h5 class="text-success fw-bold">
+                                    <i class="bi bi-geo-alt me-2"></i>
+                                    Endereço
+                                </h5>
+                            </div>
+
                             <!-- Endereço, Número, Bairro -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="endereco" class="form-label">Endereço</label>
-                                    <input type="text" class="form-control" id="endereco" name="endereco" placeholder="Digite o endereço">
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="numero" class="form-label">Número</label>
-                                    <input type="text" class="form-control" id="numero" name="numero" placeholder="Nº">
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-8">
+                                    <label for="endereco" class="form-label fw-semibold text-dark">
+                                        <i class="bi bi-house me-2"></i>Endereço
+                                    </label>
+                                    <input type="text" class="form-control form-control-lg border-2 rounded-3" id="endereco" name="endereco" placeholder="Rua, Avenida, etc.">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="bairro" class="form-label">Bairro</label>
-                                    <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Digite o bairro">
+                                    <label for="numero" class="form-label fw-semibold text-dark">
+                                        <i class="bi bi-123 me-2"></i>Número
+                                    </label>
+                                    <input type="text" class="form-control form-control-lg border-2 rounded-3" id="numero" name="numero" placeholder="123">
                                 </div>
                             </div>
-                            <!-- Estado e Cidade (Ordem trocada) -->
-                            <div class="row mb-3">
+
+                            <div class="mb-4">
+                                <label for="bairro" class="form-label fw-semibold text-dark">
+                                    <i class="bi bi-signpost me-2"></i>Bairro
+                                </label>
+                                <input type="text" class="form-control form-control-lg border-2 rounded-3" id="bairro" name="bairro" placeholder="Nome do bairro">
+                            </div>
+
+                            <!-- Estado e Cidade -->
+                            <div class="row g-3 mb-5">
                                 <div class="col-md-6">
-                                    <label for="estado" class="form-label">Estado</label>
-                                    <select class="form-control" id="estado" name="estado"></select>
+                                    <label for="estado" class="form-label fw-semibold text-dark">
+                                        <i class="bi bi-map me-2"></i>Estado
+                                    </label>
+                                    <select class="form-select form-select-lg border-2 rounded-3" id="estado" name="estado">
+                                        <option value="">Selecione o estado</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="cidade" class="form-label">Cidade</label>
-                                    <select class="form-control" id="cidade" name="cidade"></select>
+                                    <label for="cidade" class="form-label fw-semibold text-dark">
+                                        <i class="bi bi-geo-alt me-2"></i>Cidade
+                                    </label>
+                                    <select class="form-select form-select-lg border-2 rounded-3" id="cidade" name="cidade">
+                                        <option value="">Selecione a cidade</option>
+                                    </select>
                                 </div>
                             </div>
-                            <!-- Imagem -->
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <label for="imagem" class="form-label">Foto/Logo</label>
-                                    <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*">
+
+                            <!-- Seção: Mídia -->
+                            <div class="border-start border-warning border-4 ps-3 mb-4">
+                                <h5 class="text-warning fw-bold">
+                                    <i class="bi bi-image me-2"></i>
+                                    Foto/Logo
+                                </h5>
+                            </div>
+
+                            <!-- Upload de Imagem -->
+                            <div class="mb-5">
+                                <label for="imagem" class="form-label fw-semibold text-dark">
+                                    <i class="bi bi-camera me-2"></i>Selecionar Arquivo
+                                </label>
+                                <div class="border-2 border-dashed border-secondary rounded-3 p-4 text-center bg-light">
+                                    <input type="file" class="form-control border-0 bg-transparent" id="imagem" name="imagem" accept="image/*">
+                                    <div class="mt-2 text-muted">
+                                        <i class="bi bi-cloud-upload fs-1 d-block mb-2"></i>
+                                        <small>Clique para selecionar uma imagem</small><br>
+                                        <small class="text-secondary">Formatos: JPG, PNG, GIF (máx. 5MB)</small>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- Botões -->
-                            <div class="row mt-4">
-                                <div class="col-md-6 mb-2">
-                                    <button type="reset" class="btn btn-secondary w-100">Limpar</button>
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <button type="submit" class="btn btn-primary w-100">Salvar</button>
-                                </div>
-                                <div class="row mt-4">
-                                    <a href="lista_clientes.html" class="btn btn-secondary w-100">Voltar</a>
+
+                            <!-- Botões de Ação -->
+                            <div class="border-top pt-4 mt-5">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <button type="reset" class="btn btn-outline-secondary btn-lg w-100 rounded-3">
+                                            <i class="bi bi-arrow-clockwise me-2"></i>
+                                            Limpar
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a href="lista_clientes.html" class="btn btn-outline-primary btn-lg w-100 rounded-3">
+                                            <i class="bi bi-arrow-left me-2"></i>
+                                            Voltar
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-primary btn-lg w-100 rounded-3 fw-semibold">
+                                            <i class="bi bi-check-circle me-2"></i>
+                                            Salvar Cliente
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
+
+                <!-- Rodapé -->
+                <div class="text-center mt-4">
+                    <p class="text-muted small">
+                        <i class="bi bi-shield-check me-1"></i>
+                        Seus dados estão protegidos e serão utilizados apenas para fins comerciais
+                    </p>
+                </div>
             </div>
         </div>
     </div>
+
+
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="scripts/form_cliente.js"></script>
 </body>

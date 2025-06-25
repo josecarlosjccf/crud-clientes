@@ -1,76 +1,135 @@
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <title>reverb_market</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="assets/css/Login-Form-Basic-icons.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet" />
 </head>
 
-<body>
-    <section class="position-relative py-4 py-xl-5">
+<body class="bg-light">
+    <div class="min-vh-100 d-flex align-items-center py-5">
         <div class="container">
-            <div class="row mb-5">
-                <div class="col-md-8 col-xl-6 text-center mx-auto">
-                    <h2>Login</h2>
-                    <p class="w-lg-50">Faça login ou cadastre-se para acessar o sistema.</p>
-                </div>
-            </div>
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-6 col-xl-4">
-                    <div class="card mb-5">
-                        <div class="card-body d-flex flex-column align-items-center">
-                            <div class="bs-icon-xl bs-icon-circle bs-icon-primary bs-icon my-4">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="1em"
-                                    height="1em"
-                                    fill="currentColor"
-                                    viewBox="0 0 16 16"
-                                    class="bi bi-person"
-                                >
-                                    <path
-                                        d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"
-                                    ></path>
-                                </svg>
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+                    <div class="card shadow-lg border-0 rounded-4">
+                        <div class="card-body p-5">
+                            <!-- Header Section -->
+                            <div class="text-center mb-4">
+                                <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-gradient rounded-circle mb-3" style="width: 80px; height: 80px;">
+                                    <i class="bi bi-person-circle text-white" style="font-size: 2.5rem;"></i>
+                                </div>
+                                <h2 class="fw-bold text-dark mb-2">Bem-vindo de volta!</h2>
+                                <p class="text-muted mb-0">Faça login para acessar sua conta</p>
                             </div>
-                            <form id="form-login" class="text-center" method="POST">
-                                <div class="mb-3">
+
+                            <!-- Login Form -->
+                            <form id="form-login" method="POST">
+                                <div class="mb-4">
+                                    <label for="email" class="form-label text-dark fw-semibold">
+                                        <i class="bi bi-envelope me-2"></i>E-mail
+                                    </label>
                                     <input
                                         id="email"
-                                        class="form-control"
+                                        class="form-control form-control-lg border-2 rounded-3"
                                         type="email"
                                         name="email"
-                                        placeholder="E-mail"
+                                        placeholder="Digite seu e-mail"
                                         required
                                     />
                                 </div>
-                                <div class="mb-3">
-                                    <input
-                                        id="senha"
-                                        class="form-control"
-                                        type="password"
-                                        name="password"
-                                        placeholder="Senha"
-                                        required
-                                    />
+                                
+                                <div class="mb-4">
+                                    <label for="senha" class="form-label text-dark fw-semibold">
+                                        <i class="bi bi-lock me-2"></i>Senha
+                                    </label>
+                                    <div class="position-relative">
+                                        <input
+                                            id="senha"
+                                            class="form-control form-control-lg border-2 rounded-3"
+                                            type="password"
+                                            name="password"
+                                            placeholder="Digite sua senha"
+                                            required
+                                        />
+                                        <button type="button" class="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted border-0 bg-transparent" style="z-index: 10;" onclick="togglePassword()">
+                                            <i class="bi bi-eye" id="toggleIcon"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <button class="btn btn-primary d-block w-100" type="submit">Login</button>
+
+                                <!-- Remember Me and Forgot Password -->
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                                        <label class="form-check-label text-muted" for="rememberMe">
+                                            Lembrar-me
+                                        </label>
+                                    </div>
+                                    <a href="#" class="text-decoration-none text-primary fw-medium">
+                                        Esqueceu a senha?
+                                    </a>
                                 </div>
+
+                                <!-- Error Message -->
                                 <div id="mensagem-erro" class="mb-3"></div>
-                                <a class="btn btn-primary" href="cadastro_user.html">Cadastre-se</a>
+
+                                <!-- Login Button -->
+                                <div class="mb-4">
+                                    <button class="btn btn-primary btn-lg w-100 rounded-3 fw-semibold py-3" type="submit">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                                        Entrar
+                                    </button>
+                                </div>
+
+                                <!-- Divider -->
+                                <div class="text-center mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <hr class="flex-grow-1">
+                                        <span class="px-3 text-muted fw-medium">ou</span>
+                                        <hr class="flex-grow-1">
+                                    </div>
+                                </div>
+
+                                <!-- Register Button -->
+                                <div class="text-center">
+                                    <p class="text-muted mb-3">Não tem uma conta?</p>
+                                    <a class="btn btn-outline-primary btn-lg w-100 rounded-3 fw-semibold py-3" href="cadastro_user.html">
+                                        <i class="bi bi-person-plus me-2"></i>
+                                        Criar conta
+                                    </a>
+                                </div>
                             </form>
                         </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="text-center mt-4">
+                        <p class="text-muted small">
+                            © 2025 Reverb Market. Todos os direitos reservados.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <script src="scripts/login_user.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-</body>
+    </div>
 
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('senha');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.className = 'bi bi-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.className = 'bi bi-eye';
+            }
+        }
+    </script>
+    <script src="scripts/login_user.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</body>
 </html>

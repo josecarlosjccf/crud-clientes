@@ -9,13 +9,22 @@
     <link rel="stylesheet" href="assets/css/Login-Form-Basic-icons.css">
 </head>
 
-<body class="bg-light d-flex justify-content-center align-items-center vh-100">
-    <div class="bg-white bg-opacity-75 shadow p-4 rounded" style="backdrop-filter: blur(10px);-webkit-backdrop-filter: blur(10px);width: 100%;max-width: 400px;">
-        <h4 class="text-center m-4">Cadastre-se</h4>
+<body class="d-flex justify-content-center align-items-center vh-100" style="background-color: #f8f9fa;">
+    <div class="bg-white shadow p-4 rounded" style="backdrop-filter: blur(15px);-webkit-backdrop-filter: blur(15px);background-color: rgba(255, 255, 255, 0.85);width: 100%;max-width: 400px;border: 1px solid rgba(255, 255, 255, 0.2);">
+        <h4 class="text-center mb-4 fw-bold text-dark">Cadastre-se</h4>
         <form id="formCadastro">
-            <div class="mb-3"><label class="form-label" for="nome">Nome<input class="form-control" type="text" id="nome" required="" placeholder="Nome"></label></div>
-            <div class="mb-3"><label class="form-label" for="email">E-mail<input class="form-control" type="email" id="email" required="" placeholder="Digite seu e-mail"></label></div>
-            <div class="mb-3"><label class="form-label" for="senha">Senha</label><input class="form-control" type="password" id="senha" required="" placeholder="Digite sua senha"></div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-dark" for="nome">Nome</label>
+                <input class="form-control fw-medium" type="text" id="nome" required="" placeholder="Nome">
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-dark" for="email">E-mail</label>
+                <input class="form-control fw-medium" type="email" id="email" required="" placeholder="Digite seu e-mail">
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold text-dark" for="senha">Senha</label>
+                <input class="form-control fw-medium" type="password" id="senha" required="" placeholder="Digite sua senha">
+            </div>
             <button class="btn btn-primary w-100" type="submit">Cadastrar</button>
         </form>
     </div>

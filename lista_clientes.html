@@ -7,45 +7,315 @@
     <title>reverb_market</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/Login-Form-Basic-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-md bg-body py-3">
-        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span>Reverb Market</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+<body style="background-color: #f8f9fa;">
+    <!-- Navbar moderna com gradiente sutil -->
+    <nav class="navbar navbar-expand-md shadow-sm py-3" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="#">
+                <i class="bi bi-music-note-beamed me-2 fs-4"></i>
+                <span>Reverb Market</span>
+            </a>
+            <button data-bs-toggle="collapse" class="navbar-toggler border-0" data-bs-target="#navcol-2">
+                <span class="visually-hidden">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
             <div class="collapse navbar-collapse" id="navcol-2">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"></li>
-                    <li class="nav-item"></li>
-                    <li class="nav-item"></li>
-                    <a class="btn btn-primary ms-md-2" role="button" href="editar_usuario.html">Editar usuário</a>
-                </ul><a class="btn btn-primary ms-md-2" role="button" href="form_cliente.html">Cadastrar cliente</a>
-
-                <a class="btn btn-danger ms-md-2" role="button" href="index.html">Sair</a>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="editar_usuario.html">
+                            <i class="bi bi-person-gear me-1"></i>
+                            Editar usuário
+                        </a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-primary btn-sm rounded-pill px-3" href="form_cliente.html">
+                            <i class="bi bi-person-plus me-1"></i>
+                            Cadastrar cliente
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-danger btn-sm rounded-circle d-flex align-items-center justify-content-center" 
+                           style="width: 40px; height: 40px;" 
+                           href="#" 
+                           onclick="sessionStorage.clear(); window.location.href='index.html';"
+                           title="Sair">
+                            <i class="bi bi-box-arrow-right fs-5"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
-    <div class="table-responsive">
-        <table class="table table-info">
-            <thead>
-                <tr>
-                    <th class="col">Cliente</th>
-                    <th>Ação</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
+
+    <!-- Container principal com padding moderno -->
+    <div class="container mt-4">
+        <!-- Header da seção -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h2 class="fw-bold text-dark mb-1">Lista de Clientes</h2>
+                        <p class="text-muted mb-0">Gerencie seus clientes cadastrados</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary rounded-pill px-3 py-2">
+                            <i class="bi bi-people me-1"></i>
+                            Total: <span id="totalClientes">2</span> clientes
+                        </span>
+                        <button class="btn btn-outline-success btn-sm rounded-pill px-3" onclick="exportarClientesJSON()" title="Exportar clientes em JSON">
+                            <i class="bi bi-download me-1"></i>
+                            Exportar JSON
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card da tabela -->
+        <div class="row">
+            <div class="col">
+                <div class="card shadow-sm border-0 rounded-3" style="background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);">
+                    <div class="card-header bg-transparent border-0 py-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h5 class="mb-0 fw-semibold text-dark">
+                                <i class="bi bi-table me-2"></i>
+                                Clientes Cadastrados
+                            </h5>
+                            <div class="input-group" style="max-width: 250px;">
+                                <span class="input-group-text bg-transparent border-end-0">
+                                    <i class="bi bi-search text-muted"></i>
+                                </span>
+                                <input type="text" class="form-control border-start-0 bg-transparent" placeholder="Buscar cliente...">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="tabelaClientes">
+                                <thead style="background-color: #f8f9fa;">
+                                    <tr>
+                                        <th class="col border-0 py-3 px-4 fw-semibold text-dark">
+                                            <i class="bi bi-person me-2"></i>
+                                            Cliente
+                                        </th>
+                                        <th class="border-0 py-3 px-4 fw-semibold text-dark text-center">
+                                            <i class="bi bi-gear me-2"></i>
+                                            Ações
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-bottom border-light" data-nome="Nome do Cliente" data-email="email@exemplo.com">
+                                        <td class="py-4 px-4">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-person text-white"></i>
+                                                </div>
+                                                <div>
+                                                    <span class="fw-medium text-dark">Nome do Cliente</span>
+                                                    <br>
+                                                    <small class="text-muted">email@exemplo.com</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4 text-center">
+                                            <div class="btn-group" role="group">
+                                                <button class="btn btn-outline-primary btn-sm" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm" title="Excluir">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-bottom border-light" data-nome="Outro Cliente" data-email="outro@exemplo.com">
+                                        <td class="py-4 px-4">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-person text-white"></i>
+                                                </div>
+                                                <div>
+                                                    <span class="fw-medium text-dark">Outro Cliente</span>
+                                                    <br>
+                                                    <small class="text-muted">outro@exemplo.com</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4 text-center">
+                                            <div class="btn-group" role="group">
+                                                <button class="btn btn-outline-primary btn-sm" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm" title="Excluir">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer do card com paginação -->
+                    <div class="card-footer bg-transparent border-0 py-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <small class="text-muted">Mostrando 2 de 2 resultados</small>
+                            <nav>
+                                <ul class="pagination pagination-sm mb-0">
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Anterior</span>
+                                    </li>
+                                    <li class="page-item active">
+                                        <span class="page-link">1</span>
+                                    </li>
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Próximo</span>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="scripts/lista_clientes.js"></script>
+
+    <script>
+        // Função para verificar se a página foi recarregada
+        function redirecionarSeRecarregado() {
+            // Verifica a propriedade performance.navigation.type
+            // TYPE_RELOAD (1) indica que a página foi recarregada (F5, botão de recarregar)
+            if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+                // Redireciona para o index.html
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Função para exportar clientes em JSON
+        function exportarClientesJSON() {
+            try {
+                // Coletar todos os dados dos clientes da tabela
+                const tabela = document.getElementById('tabelaClientes');
+                const linhas = tabela.querySelectorAll('tbody tr');
+                const clientes = [];
+
+                linhas.forEach((linha, index) => {
+                    const nome = linha.getAttribute('data-nome');
+                    const email = linha.getAttribute('data-email');
+                    
+                    if (nome && email) {
+                        clientes.push({
+                            id: index + 1,
+                            nome: nome,
+                            email: email,
+                            dataExportacao: new Date().toISOString()
+                        });
+                    }
+                });
+
+                // Criar objeto JSON com metadados
+                const dadosExportacao = {
+                    metadata: {
+                        totalClientes: clientes.length,
+                        dataExportacao: new Date().toISOString(),
+                        sistema: "Reverb Market",
+                        versao: "1.0"
+                    },
+                    clientes: clientes
+                };
+
+                // Converter para JSON
+                const jsonString = JSON.stringify(dadosExportacao, null, 2);
+
+                // Criar blob e fazer download
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                // Criar link temporário para download
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `clientes_reverb_market_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Limpar URL objeto
+                URL.revokeObjectURL(url);
+
+                // Mostrar mensagem de sucesso
+                mostrarMensagemSucesso(`${clientes.length} clientes exportados com sucesso!`);
+
+            } catch (error) {
+                console.error('Erro ao exportar clientes:', error);
+                mostrarMensagemErro('Erro ao exportar clientes. Tente novamente.');
+            }
+        }
+
+        // Função para mostrar mensagem de sucesso
+        function mostrarMensagemSucesso(mensagem) {
+            const toast = document.createElement('div');
+            toast.className = 'toast align-items-center text-bg-success border-0 position-fixed';
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999;';
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-2"></i>
+                        ${mensagem}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            
+            // Remover o toast após esconder
+            toast.addEventListener('hidden.bs.toast', () => {
+                document.body.removeChild(toast);
+            });
+        }
+
+        // Função para mostrar mensagem de erro
+        function mostrarMensagemErro(mensagem) {
+            const toast = document.createElement('div');
+            toast.className = 'toast align-items-center text-bg-danger border-0 position-fixed';
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999;';
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        ${mensagem}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            
+            // Remover o toast após esconder
+            toast.addEventListener('hidden.bs.toast', () => {
+                document.body.removeChild(toast);
+            });
+        }
+
+        // Chama a função quando o DOM estiver completamente carregado
+        document.addEventListener('DOMContentLoaded', redirecionarSeRecarregado);
+    </script>
 </body>
 
 </html>
